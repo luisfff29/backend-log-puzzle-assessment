@@ -48,6 +48,7 @@ def download_images(img_urls, dest_dir):
         print("Directory '{}' already exists".format(dest_dir))
     html_img = ''
     for i, link in enumerate(img_urls):
+        print('Retrieving... ' + link)
         image_name = 'img' + str(i)
         urllib.urlretrieve(link, image_name)
         src_path = os.path.join(os.getcwd(), image_name)
