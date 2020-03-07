@@ -29,9 +29,9 @@ import argparse
 def read_urls(filename):
     with open(filename) as f:
         urls = f.read()
-    matches = re.findall(r'\S*puzzle\S*', urls)
-    alpha_sort = sorted(set(matches))
-    return ["http://code.google.com" + x for x in alpha_sort]
+    matches = re.findall(r'GET (\S+puzzle\S+-(\w{4})\.\S+) HTTP', urls)
+    alpha_sort = sorted(set(matches), key=lambda x: x[1])
+    return ["http://code.google.com" + x[0] for x in alpha_sort]
 
 
 def download_images(img_urls, dest_dir):
