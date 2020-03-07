@@ -28,7 +28,8 @@ def read_urls(filename):
     with open('animal_code.google.com') as f:
         urls = f.read()
     matches = re.findall(r'\S*puzzle\S*', urls)
-    for x in matches:
+    alpha_sort = sorted(set(matches))
+    for x in alpha_sort:
         print(x)
 
 
