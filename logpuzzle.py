@@ -46,10 +46,16 @@ def download_images(img_urls, dest_dir):
         os.mkdir(dest_dir)
     except OSError:
         print("Directory '{}' already exists".format(dest_dir))
+    html_img = ''
     for i, link in enumerate(img_urls):
         image_name = 'img' + str(i)
         urllib.urlretrieve(link, image_name)
-        os.rename(os.path.join(os.getcwd(), image_name), os.path.join(os.path.abspath(dest_dir), image_name))
+        src_path = os.path.join(os.getcwd(), image_name)
+        dst_path = os.path.join(os.path.abspath(dest_dir), image_name)
+        os.rename(src_path, dst_path)
+        html_img += '<img src="./{}">'.format(image_name)
+    print(html_img)
+        
 
 
 def create_parser():
