@@ -27,7 +27,7 @@ import argparse
 
 
 def read_urls(filename):
-    with open('animal_code.google.com') as f:
+    with open(filename) as f:
         urls = f.read()
     matches = re.findall(r'\S*puzzle\S*', urls)
     alpha_sort = sorted(set(matches))
@@ -50,15 +50,19 @@ def download_images(img_urls, dest_dir):
     for i, link in enumerate(img_urls):
         print('Retrieving... ' + link)
         image_name = 'img' + str(i)
+        # Download the following links
         urllib.urlretrieve(link, image_name)
         src_path = os.path.join(os.getcwd(), image_name)
         dst_path = os.path.join(os.path.abspath(dest_dir), image_name)
+        # Move all links to the new directory
         os.rename(src_path, dst_path)
+        # Create a img source with all links for html file
         html_img += '<img src="./{}">'.format(image_name)
     with open('index.html', 'w') as wf:
         wf.write('<html><body>{}</body></html>'.format(html_img))
     src_html = os.path.abspath('index.html')
     dst_html = os.path.join(os.path.abspath(dest_dir), 'index.html')
+    # Move index.html to the new directory as well
     os.rename(src_html, dst_html)
 
 
