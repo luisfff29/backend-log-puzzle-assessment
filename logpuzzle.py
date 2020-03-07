@@ -54,8 +54,11 @@ def download_images(img_urls, dest_dir):
         dst_path = os.path.join(os.path.abspath(dest_dir), image_name)
         os.rename(src_path, dst_path)
         html_img += '<img src="./{}">'.format(image_name)
-    print(html_img)
-        
+    with open('index.html', 'w') as wf:
+        wf.write('<html><body>{}</body></html>'.format(html_img))
+    src_html = os.path.abspath('index.html')
+    dst_html = os.path.join(os.path.abspath(dest_dir), 'index.html')
+    os.rename(src_html, dst_html)
 
 
 def create_parser():
