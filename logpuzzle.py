@@ -27,7 +27,9 @@ import argparse
 def read_urls(filename):
     with open('animal_code.google.com') as f:
         urls = f.read()
-    print(urls)
+    matches = re.findall(r'\S*puzzle\S*', urls)
+    for x in matches:
+        print(x)
 
 
 def download_images(img_urls, dest_dir):
