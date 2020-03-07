@@ -25,12 +25,9 @@ import argparse
 
 
 def read_urls(filename):
-    """Returns a list of the puzzle urls from the given log file,
-    extracting the hostname from the filename itself.
-    Screens out duplicate urls and returns the urls sorted into
-    increasing order."""
-    # +++your code here+++
-    pass
+    with open('animal_code.google.com') as f:
+        urls = f.read()
+    print(urls)
 
 
 def download_images(img_urls, dest_dir):
@@ -67,10 +64,10 @@ def main(args):
 
     img_urls = read_urls(parsed_args.logfile)
 
-    if parsed_args.todir:
-        download_images(img_urls, parsed_args.todir)
-    else:
-        print('\n'.join(img_urls))
+    # if parsed_args.todir:
+    #     download_images(img_urls, parsed_args.todir)
+    # else:
+    #     print('\n'.join(img_urls))
 
 
 if __name__ == '__main__':
