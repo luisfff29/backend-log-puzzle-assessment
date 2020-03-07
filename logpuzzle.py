@@ -29,8 +29,7 @@ def read_urls(filename):
         urls = f.read()
     matches = re.findall(r'\S*puzzle\S*', urls)
     alpha_sort = sorted(set(matches))
-    for x in alpha_sort:
-        print("http://code.google.com" + x)
+    return ["http://code.google.com" + x for x in alpha_sort]
 
 
 def download_images(img_urls, dest_dir):
@@ -67,10 +66,10 @@ def main(args):
 
     img_urls = read_urls(parsed_args.logfile)
 
-    # if parsed_args.todir:
-    #     download_images(img_urls, parsed_args.todir)
-    # else:
-    #     print('\n'.join(img_urls))
+    if parsed_args.todir:
+        download_images(img_urls, parsed_args.todir)
+    else:
+        print('\n'.join(img_urls))
 
 
 if __name__ == '__main__':
