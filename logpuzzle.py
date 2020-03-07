@@ -46,6 +46,8 @@ def download_images(img_urls, dest_dir):
         os.mkdir(dest_dir)
     except OSError:
         print("Directory '{}' already exists".format(dest_dir))
+    for i, link in enumerate(img_urls):
+        urllib.urlretrieve(link, 'img' + str(i))
 
 
 def create_parser():
