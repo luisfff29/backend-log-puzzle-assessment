@@ -30,7 +30,7 @@ def read_urls(filename):
     matches = re.findall(r'\S*puzzle\S*', urls)
     alpha_sort = sorted(set(matches))
     for x in alpha_sort:
-        print(x)
+        print("http://code.google.com" + x)
 
 
 def download_images(img_urls, dest_dir):
