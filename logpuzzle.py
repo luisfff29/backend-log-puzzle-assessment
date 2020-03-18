@@ -29,6 +29,7 @@ import argparse
 def read_urls(filename):
     with open(filename) as f:
         urls = f.read()
+    # List of all the matches founded
     matches = re.findall(r'GET (\S+puzzle\S+-(\w{4})\.\S+) HTTP', urls)
     alpha_sort = sorted(set(matches), key=lambda x: x[1])
     return ["http://code.google.com" + x[0] for x in alpha_sort]
@@ -43,6 +44,7 @@ def download_images(img_urls, dest_dir):
     Creates the directory if necessary.
     """
     try:
+        # Creates a directory
         os.mkdir(dest_dir)
     except OSError:
         print("Directory '{}' already exists".format(dest_dir))
