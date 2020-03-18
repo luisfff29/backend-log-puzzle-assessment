@@ -12,9 +12,12 @@ http://code.google.com/edu/languages/google-python-class/
 Given an apache logfile, find the puzzle urls and download the images.
 
 Here's what a puzzle url looks like:
-10.254.254.28 - - [06/Aug/2007:00:13:48 -0700] "GET /~foo/puzzle-bar-aaab.jpg HTTP/1.0" 302 528 "-" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"
+10.254.254.28 - - [06/Aug/2007:00:13:48 -0700] "GET /~foo/puzzle-bar-aaab.jpg
+HTTP/1.0" 302 528 "-" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US;
+rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"
 
 """
+__author__ = "luisfff29"
 
 import os
 import re
@@ -24,12 +27,12 @@ import argparse
 
 
 def read_urls(filename):
-    """Returns a list of the puzzle urls from the given log file,
-    extracting the hostname from the filename itself.
-    Screens out duplicate urls and returns the urls sorted into
-    increasing order."""
-    # +++your code here+++
-    pass
+    with open(filename) as f:
+        urls = f.read()
+    # List of all the matches founded
+    matches = re.findall(r'GET (\S+puzzle\S+-(\w{4})\.\S+) HTTP', urls)
+    alpha_sort = sorted(set(matches), key=lambda x: x[1])
+    return ["http://code.google.com" + x[0] for x in alpha_sort]
 
 
 def download_images(img_urls, dest_dir):
@@ -40,14 +43,36 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    # +++your code here+++
-    pass
+    try:
+        # Creates a directory
+        os.mkdir(dest_dir)
+    except OSError:
+        print("Directory '{}' already exists".format(dest_dir))
+    html_img = ''
+    for i, link in enumerate(img_urls):
+        print('Retrieving... ' + link)
+        image_name = 'img' + str(i)
+        # Download the following links
+        urllib.urlretrieve(link, image_name)
+        src_path = os.path.join(os.getcwd(), image_name)
+        dst_path = os.path.join(os.path.abspath(dest_dir), image_name)
+        # Move all links to the new directory
+        os.rename(src_path, dst_path)
+        # Create a img source with all links for html file
+        html_img += '<img src="./{}">'.format(image_name)
+    with open('index.html', 'w') as wf:
+        wf.write('<html><body>{}</body></html>'.format(html_img))
+    src_html = os.path.abspath('index.html')
+    dst_html = os.path.join(os.path.abspath(dest_dir), 'index.html')
+    # Move index.html to the new directory as well
+    os.rename(src_html, dst_html)
 
 
 def create_parser():
     """Create an argument parser object"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--todir',  help='destination directory for downloaded images')
+    parser.add_argument(
+        '-d', '--todir',  help='destination directory for downloaded images')
     parser.add_argument('logfile', help='apache logfile to extract urls from')
 
     return parser
